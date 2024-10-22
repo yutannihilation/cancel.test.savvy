@@ -7,6 +7,7 @@ edition = "2021"
 crate-type = ["staticlib", "lib"]
 
 [dependencies]
+ctrlc = "3.4.5"
 savvy = "*"
 
 [profile.release]
