@@ -7,8 +7,9 @@ edition = "2021"
 crate-type = ["staticlib", "lib"]
 
 [dependencies]
-ctrlc = "3.4.5"
+pollster = "0.3.0"
 savvy = "*"
+tokio = { version = "1.41.0", features = ["signal", "rt"] }
 
 [profile.release]
 # By default, on release build, savvy terminates the R session when a panic
