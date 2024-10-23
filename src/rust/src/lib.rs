@@ -1,4 +1,4 @@
-use savvy::savvy;
+use savvy::{eval_parse_text, savvy};
 use std::{
     cell::LazyCell,
     sync::{
@@ -16,7 +16,7 @@ struct Foo {}
 
 impl Drop for Foo {
     fn drop(&mut self) {
-        savvy::r_eprintln!("dropped!");
+        savvy::r_println!("dropped!");
     }
 }
 
@@ -41,6 +41,11 @@ fn fun() -> savvy::Result<()> {
     INTERRUPTED.store(false, Ordering::SeqCst);
 
     for i in 0..30 {
+        savvy::r_println!("Iteration {i}");
+
+        // This works, but why?
+        eval_parse_text("Sys.sleep(0)")?;
+
         if INTERRUPTED.load(Ordering::SeqCst) {
             savvy::r_println!("Interrupted");
             unsafe {
@@ -51,7 +56,6 @@ fn fun() -> savvy::Result<()> {
             }
             return Ok(());
         }
-        savvy::r_println!("Iteration {i}");
         std::thread::sleep(std::time::Duration::from_millis(100));
     }
 
